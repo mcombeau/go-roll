@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"math/rand"
 	"os"
 	"regexp"
 	"strconv"
@@ -29,9 +30,10 @@ func main() {
 		rollNumber, diceSides, err := parseDiceNotation(arg)
 		if err != nil {
 			fmt.Printf("Error: %v\n", err)
-			os.Exit(1)
+			continue
 		}
-		fmt.Printf("Arg: %s, Rolls: %d, Sides: %d\n", arg, rollNumber, diceSides)
+		results := rollDice(rollNumber, diceSides)
+		fmt.Printf("%s: %v: %d\n", arg, results, sum(results))
 	}
 	return
 }
@@ -53,4 +55,20 @@ func parseDiceNotation(notation string) (rollNumber int, diceSides int, err erro
 	}
 
 	return rollNumber, diceSides, nil
+}
+
+func rollDice(rollNumber int, diceSides int) (results []int) {
+	results = make([]int, rollNumber)
+	for i := 0; i < rollNumber; i++ {
+		results[i] = rand.Intn(diceSides) + 1
+	}
+	return results
+}
+
+func sum(values []int) (total int) {
+	total = 0
+	for _, value := range values {
+		total += value
+	}
+	return total
 }
