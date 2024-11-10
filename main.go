@@ -19,6 +19,12 @@ var (
 )
 
 func main() {
+	if len(os.Args) <= 1 {
+		fmt.Printf("Usage:\t\t%s <notation...>\n", os.Args[0])
+		fmt.Printf("Example:\t%s 1d6 2d20\n", os.Args[0])
+		os.Exit(0)
+	}
+
 	for _, arg := range os.Args[1:] {
 		rollNumber, diceSides, err := parseDiceNotation(arg)
 		if err != nil {
